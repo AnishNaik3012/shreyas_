@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>AI Clinical Report Summary</title>
+    <style>
+      :root {
+        --primary: #0f4c5c;
+        --accent: #2a9d8f;
+        --muted: #64748b;
+        --bg: #f8fafc;
+        --card: #ffffff;
+        --border: #e2e8f0;
+      }
+      body {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        color: #0f172a;
+        background: var(--bg);
+        margin: 0;
+        padding: 32px;
+      }
+      .container {
+        max-width: 760px;
+        margin: 0 auto;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 28px 32px 24px;
+      }
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 16px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .logo {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        background: var(--accent);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+        font-size: 18px;
+      }
+      .title {
+        font-size: 22px;
+        font-weight: 700;
+        margin: 18px 0 8px;
+        color: var(--primary);
+      }
+      .subtitle {
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .section {
+        margin-top: 20px;
+      }
+      .section h3 {
+        margin: 0 0 8px;
+        font-size: 15px;
+        color: var(--primary);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .card {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 14px 16px;
+        background: #ffffff;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .pill {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(42, 157, 143, 0.1);
+        color: var(--accent);
+        font-weight: 600;
+        font-size: 12px;
+      }
+      ul {
+        margin: 8px 0 0 18px;
+        padding: 0;
+      }
+      footer {
+        margin-top: 24px;
+        border-top: 1px solid var(--border);
+        padding-top: 12px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="brand">
+          <div class="logo">S</div>
+          <div>
+            <div style="font-weight: 700; font-size: 16px;">Savemom</div>
+            <div class="subtitle">Clinical AI Report Platform</div>
+          </div>
+        </div>
+        <div class="subtitle">Generated: {{ generated_at }}</div>
+      </div>
+
+      <div class="title">AI Clinical Report Summary</div>
+      <div class="subtitle">Report ID: {{ report_id }}</div>
+
+      <div class="section">
+        <h3>Patient Information</h3>
+        <div class="card grid">
+          <div><strong>Patient Name:</strong> {{ patient_name }}</div>
+          <div><strong>Patient ID:</strong> {{ patient_id }}</div>
+          <div><strong>Report Title:</strong> {{ report_title }}</div>
+          <div><strong>Health Status:</strong> <span class="pill">{{ health_status }}</span></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>AI Summary</h3>
+        <div class="card">{{ summary }}</div>
+      </div>
+
+      <div class="section">
+        <h3>Key Findings</h3>
+        <div class="card">
+          {% if key_findings and key_findings|length > 0 %}
+            <ul>
+              {% for item in key_findings %}
+                {% if item.label and item.value %}
+                  <li><strong>{{ item.label }}:</strong> {{ item.value }}</li>
+                {% else %}
+                  <li>{{ item }}</li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          {% else %}
+            No key findings detected.
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>Clinical Interpretation</h3>
+        <div class="card">{{ interpretation }}</div>
+      </div>
+
+      <div class="section">
+        <h3>Recommendations</h3>
+        <div class="card">
+          {% if recommendations and recommendations|length > 0 %}
+            <ul>
+              {% for rec in recommendations %}
+                <li>{{ rec }}</li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            No recommendations provided.
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>Red Flags</h3>
+        <div class="card">
+          {% if red_flags and red_flags|length > 0 %}
+            <ul>
+              {% for flag in red_flags %}
+                <li>{{ flag }}</li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            None noted.
+          {% endif %}
+        </div>
+      </div>
+
+      <footer>
+        This report is AI-assisted and does not replace medical diagnosis.
+      </footer>
+    </div>
+  </body>
+</html>
